@@ -40,16 +40,9 @@ namespace Server
                 TcpClient client = listener.AcceptTcpClient();
                 Console.WriteLine("Client accepted.");
                 NetworkStream stream = client.GetStream();
-                try
-                {
-                    Console.WriteLine(RecvMessage(stream));
-                    SendMessage(stream, "OK, I know your name is Leo.");
 
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Something went wrong.");
-                }
+                Console.WriteLine(RecvMessage(stream));
+                SendMessage(stream, "OK, I know your name is Leo.");
             }
         }
     }

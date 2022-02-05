@@ -33,22 +33,14 @@ namespace Client
 
         public static void Main(string[] arg)
         {
-            try
-            {
-                TcpClient client = new TcpClient("127.0.0.1", 1302);  // is equal to s.connect()
-                NetworkStream stream = client.GetStream();
+            TcpClient client = new TcpClient("127.0.0.1", 1302);  // is equal to s.connect()
+            NetworkStream stream = client.GetStream();
 
-                SendMessage(stream, "My name is Sir Jackie.");
-                Console.WriteLine(RecvMessage(stream));
+            SendMessage(stream, "My name is Sir Jackie.");
+            Console.WriteLine(RecvMessage(stream));
                 
-                stream.Close();
-                client.Close();
-
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Failed to connect...");
-            }
+            stream.Close();
+            client.Close();
 
             Console.ReadKey();
         }
