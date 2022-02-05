@@ -9,7 +9,7 @@ namespace Server
     {
         public static void Main(string[] args)
         {
-            TcpListener listener = new TcpListener(System.Net.IPAddress.Any, 1302);
+            TcpListener listener = new TcpListener(System.Net.IPAddress.Any, 1302);  // is equal to s.bind()
             listener.Start();
             while(true)
             {

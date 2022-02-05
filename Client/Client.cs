@@ -12,15 +12,13 @@ namespace Client
             connection:
             try
             {
-                TcpClient client = new TcpClient("127.0.0.1", 1302);
-                string messageToSend = "My name is Neo";
+                TcpClient client = new TcpClient("127.0.0.1", 1302);  // is equal to s.connect()
 
-                int byteCount = Encoding.ASCII.GetByteCount(messageToSend + 1);
-                byte[] sendData = new byte[byteCount];
-                sendData = Encoding.ASCII.GetBytes(messageToSend);
+                string msg = "My name is Neo";
+                byte[] msgBin = Encoding.UTF8.GetBytes(msg);
 
                 NetworkStream stream = client.GetStream();
-                stream.Write(sendData, 0, sendData.Length);
+                stream.Write(msgBin, 0, msgBin.Length);
                 Console.WriteLine("Sending data to Server...");
 
                 StreamReader sr = new StreamReader(stream);
