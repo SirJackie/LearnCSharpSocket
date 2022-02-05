@@ -9,31 +9,49 @@ namespace Client
     {
         public static void Main(string[] arg)
         {
-            connection:
             try
             {
                 TcpClient client = new TcpClient("127.0.0.1", 1302);  // is equal to s.connect()
+                NetworkStream stream = client.GetStream();
+
+                //
+                // Write a Message
+                //
 
                 string msg = "My name is Neo";
                 byte[] msgBin = Encoding.UTF8.GetBytes(msg);
-
-                NetworkStream stream = client.GetStream();
                 stream.Write(msgBin, 0, msgBin.Length);
-                Console.WriteLine("Sending data to Server...");
 
-                StreamReader sr = new StreamReader(stream);
-                string response = sr.ReadLine();
-                Console.WriteLine(response);
+                //
+                // Read a Message
+                //
+
+                byte[] buffer = new byte[1024];
+                stream.Read(buffer, 0, buffer.Length);
+
+                // Count the Length of the Byte Array received
+                int recv = 0;
+                foreach (byte b in buffer)
+                {
+                    if (b != 0)
+                    {
+                        recv++;
+                    }
+                }
+
+                string request = Encoding.UTF8.GetString(buffer, 0, recv);
+                Console.WriteLine(request);
 
                 stream.Close();
                 client.Close();
-                Console.ReadKey();
+
             }
             catch(Exception e)
             {
                 Console.WriteLine("Failed to connect...");
-                goto connection;
             }
+
+            Console.ReadKey();
         }
     }
 }
