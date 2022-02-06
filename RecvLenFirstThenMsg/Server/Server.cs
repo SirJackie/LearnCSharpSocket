@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 
 namespace Server
@@ -45,16 +46,28 @@ namespace Server
 
         public static void Main(string[] args)
         {
-            TcpListener listener = new TcpListener(System.Net.IPAddress.Any, 1302);  // is equal to s.bind()
+            TcpListener listener = new TcpListener(System.Net.IPAddress.Any, 13214);  // is equal to s.bind()
             listener.Start();
             while(true)
             {
                 TcpClient client = listener.AcceptTcpClient();
-                Console.WriteLine("Client accepted.");
+                Console.WriteLine("Client Accepted: " + ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
                 NetworkStream stream = client.GetStream();
+                while (true)
+                {
+                    string msg = SafeRecvMessage(stream);
+                    if (msg == "get message please")
+                    {
+                        SafeSendMessage(stream, "Hello World!");
+                    }
+                    else if (msg == "close socket please")
+                    {
+                        break;
+                    }
+                }
 
-                Console.WriteLine(SafeRecvMessage(stream));
-                SafeSendMessage(stream, "OK, I know your name is Sir Jackie.");
+                stream.Close();
+                client.Close();
             }
         }
     }

@@ -45,16 +45,20 @@ namespace Client
 
         public static void Main(string[] arg)
         {
-            TcpClient client = new TcpClient("127.0.0.1", 1302);  // is equal to s.connect()
+            TcpClient client = new TcpClient("127.0.0.1", 13214);  // is equal to s.connect()
             NetworkStream stream = client.GetStream();
 
-            SafeSendMessage(stream, "My name is Sir Jackie.");
-            Console.WriteLine(SafeRecvMessage(stream));
+            for (int i = 0; i < 10; i++)
+            {
+                SafeSendMessage(stream, "get message please");
+                string msg = SafeRecvMessage(stream);
+                Console.WriteLine(msg);
+            }
+
+            SafeSendMessage(stream, "close socket please");
                 
             stream.Close();
             client.Close();
-
-            Console.ReadKey();
         }
     }
 }
